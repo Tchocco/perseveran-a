@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- LÓGICA DE CARREGAMENTO E PROCESSAMENTO DE DADOS ---
   async function carregarCSV() {
     const status = document.getElementById('statusCSV');
-    const url = 'https://raw.githubusercontent.com/Tchocco/perseveran-a/refs/heads/main/resultados.csv';
+    const url = 'https://github.com/Tchocco/perseveran-a/blob/main/resultados.csv';
     
     try {
       const resp = await fetch(url, { cache: 'no-store' } );
@@ -289,3 +289,4 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const h of lista) {
       const div = document.createElement('div');
       div.className =
+
