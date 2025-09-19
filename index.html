@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Lotofácil Assistente | João Paulo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{
+      --primary:#0066b3;--secondary:#ff6600;--accent:#009688;--light:#f8f9fa;
+      --dark:#212529;--success:#28a745;--warning:#ffc107;--danger:#dc3545;
+      --gray:#6c757d;--light-gray:#e9ecef
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+    body{background:#f0f2f5;color:var(--dark );line-height:1.6}
+    .container{max-width:1200px;margin:0 auto;padding:0 15px}
+    header{background:linear-gradient(135deg,var(--primary) 0%,#004680 100%);color:#fff;padding:1.5rem 0;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    .header-content{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:15px}
+    .logo i{font-size:2.2rem}
+    .logo h1{font-size:1.5rem;font-weight:700}
+    .logo span{display:block;font-size:.85rem;opacity:.9;font-weight:300}
+    nav ul{display:flex;list-style:none;gap:16px}
+    nav a{color:#fff;text-decoration:none;font-weight:500;padding:6px 10px;border-radius:4px;transition:.2s}
+    nav a:hover{background:rgba(255,255,255,.1)}
+    .hero{text-align:center;padding:2rem 1rem;background:#fff;margin:1.25rem auto;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.05)}
+    .hero h2{font-size:1.8rem;margin-bottom:.5rem;color:var(--primary)}
+    .hero p{font-size:1rem;max-width:800px;margin:0 auto 1rem;color:var(--gray)}
+    .warning{background:#fff3cd;color:#856404;padding:12px;border-radius:6px;margin:14px 0;border-left:4px solid var(--warning)}
+    .card{background:#fff;border-radius:10px;padding:1rem;margin-bottom:1.25rem;box-shadow:0 5px 15px rgba(0,0,0,.05)}
+    .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--light-gray);gap:12px;flex-wrap:wrap}
+    .card-title{font-size:1.2rem;color:var(--primary);display:flex;align-items:center;gap:10px}
+    .btn{display:inline-block;padding:10px 16px;background:var(--primary);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;transition:.2s;text-decoration:none}
+    .btn:hover{background:#0056a3;transform:translateY(-1px)}
+    .btn:disabled{background:var(--gray);cursor:not-allowed;transform:none;}
+    .btn-secondary{background:var(--secondary)}
+    .btn-secondary:hover{background:#e55c00}
+    .btn-success{background:var(--success)}
+    .btn-success:hover{background:#218838}
+    .btn-danger{background:var(--danger)}
+    .btn-danger:hover{filter:brightness(.95)}
+    .row{display:flex;flex-wrap:wrap;margin:0 -10px}
+    .col{flex:1;padding:0 10px;min-width:260px;margin-bottom:12px}
+    .numbers-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+    .number{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--light);border-radius:50%;font-weight:700;cursor:pointer;user-select:none;transition:.15s;border:1px solid #dee2e6}
+    .number.selected{background:var(--primary);color:#fff;border-color:transparent}
+    .filters{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0}
+    .filter-group{display:flex;flex-direction:column;gap:6px}
+    .filter-group label{font-weight:600;font-size:.9rem}
+    input,select{padding:8px 10px;border:1px solid #ced4da;border-radius:6px;font-size:1rem;background:#fff}
+    .jogo{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--light);border-radius:8px;margin-bottom:10px;align-items:center;}
+    .jogo-number{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;font-weight:700;font-size:.9rem;box-shadow:0 2px 4px rgba(0,0,0,.08);border:1px solid #e9ecef}
+    .jogo-actions{display:flex;gap:8px;margin-left:auto;}
+    .results{max-height:420px;overflow-y:auto}
+    .stat{display:inline-block;background:#f6f7f9;border:1px solid #e9ecef;border-radius:6px;padding:6px 8px;margin:4px 6px 0 0;font-size:.9rem}
+    footer{background:var(--dark);color:#fff;padding:1.5rem 0;margin-top:2rem}
+    .footer-content{display:flex;flex-wrap:wrap;justify-content:space-between}
+    .footer-section{flex:1;min-width:220px;margin-bottom:16px}
+    .footer-section h3{margin-bottom:.8rem;font-size:1.1rem}
+    .footer-bottom{text-align:center;padding-top:12px;margin-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+    @media (max-width:768px){
+      .header-content{flex-direction:column;gap:10px}
+      nav ul{flex-wrap:wrap;justify-content:center}
+      .card-header{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container header-content">
+    <div class="logo">
+      <i class="fas fa-chart-line"></i>
+      <div>
+        <h1>Lotofácil Assistente <span>por João Paulo</span></h1>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#gerador">Gerador</a></li>
+        <li><a href="#analise">Análise</a></li>
+        <li><a href="#historico">Histórico</a></li>
+        <li><a href="#sobre">Sobre</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h2>Assistente de Palpites para Lotofácil</h2>
+    <p>Carrega resultados de um banco CSV, analisa estatísticas e gera palpites com filtros e validações. Lembre-se: não há garantias de acerto.</p>
+    <div class="warning">
+      <i class="fas fa-exclamation-triangle"></i> Este site é educacional. Loteria é jogo de sorte; jogue com responsabilidade.
+    </div>
+    <div id="statusCSV" class="stat">Carregando resultados...</div>
+  </section>
+
+  <section class="card" id="gerador">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-magic"></i> Gerador de Palpites</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="btnGerar">Gerar Palpite</button>
+        <button class="btn btn-secondary" id="btnGerarLote">Gerar 10</button>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="filter-group">
+        <label for="minEven">Mín. Pares</label>
+        <input type="number" id="minEven" min="0" max="15" value="5">
+      </div>
+      <div class="filter-group">
+        <label for="maxEven">Máx. Pares</label>
+        <input type="number" id="maxEven" min="0" max="15" value="10">
+      </div>
+      <div class="filter-group">
+        <label for="minSum">Soma Mín.</label>
+        <input type="number" id="minSum" min="15" max="325" value="180">
+      </div>
+      <div class="filter-group">
+        <label for="maxSum">Soma Máx.</label>
+        <input type="number" id="maxSum" min="15" max="325" value="220">
+      </div>
+      <div class="filter-group">
+        <label for="pesoFrequencia">Peso Frequência</label>
+        <input type="number" id="pesoFrequencia" min="0" max="10" step="1" value="3" disabled>
+      </div>
+      <div class="filter-group">
+        <label for="pesoRecencia">Peso Recência</label>
+        <input type="number" id="pesoRecencia" min="0" max="10" step="1" value="2" disabled>
+      </div>
+      <div class="filter-group">
+        <label for="evitarRepeticao">Evitar repetir 10+ do último?</label>
+        <select id="evitarRepeticao" disabled>
+          <option value="sim" selected>Sim</option>
+          <option value="nao">Não</option>
+        </select>
+      </div>
+    </div>
+    <div class="numbers-grid" id="numbersGrid"></div>
+    <div id="jogosGerados"></div>
+  </section>
+
+  <section class="card" id="meusJogos">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-ticket-alt"></i> Meus Jogos</h2>
+      <div>
+        <button class="btn" id="btnExport">Exportar CSV</button>
+        <button class="btn" id="btnImport">Importar</button>
+        <button class="btn btn-danger" id="btnLimpar">Limpar</button>
+      </div>
+    </div>
+    <div id="meusJogosList"></div>
+    <input type="file" id="fileImport" accept=".txt,.csv" style="display:none">
+  </section>
+
+  <section class="card" id="verificador">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-check-circle"></i> Verificador de Acertos</h2>
+    </div>
+    <div class="filters">
+      <div class="filter-group">
+        <label for="verificadorJogoSelect">Selecione um Jogo Salvo</label>
+        <select id="verificadorJogoSelect" disabled></select>
+      </div>
+      <div class="filter-group">
+        <label for="verificadorConcursoSelect">Selecione um Concurso</label>
+        <select id="verificadorConcursoSelect" disabled></select>
+      </div>
+    </div>
+    <button class="btn btn-success" id="btnVerificarAcertos" disabled>Verificar</button>
+    <div id="verificadorResultado" style="margin-top:12px; font-weight: bold;"></div>
+  </section>
+
+  <section class="card" id="analise">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-calculator"></i> Simulador de Probabilidades</h2>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="filter-group">
+          <label for="numApostas">Número de Apostas</label>
+          <input type="number" id="numApostas" min="1" max="1000000" value="10">
+        </div>
+      </div>
+      <div class="col">
+        <div class="filter-group">
+          <label for="valorAposta">Valor por Aposta (R$)</label>
+          <input type="number" id="valorAposta" min="2.5" step="0.5" value="3.00">
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-success" id="btnSimular">Simular</button>
+    <div id="simulacaoResult" style="margin-top:12px"></div>
+  </section>
+
+  <section class="card" id="historico">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-database"></i> Histórico e Estatísticas (CSV)</h2>
+    </div>
+    <canvas id="freqChart" style="margin-top: 1rem; max-height: 300px;"></canvas>
+    <div id="statsBox" style="margin-top: 1rem;">
+      <div class="stat" id="qtdConcursos">Concursos: 0</div>
+      <div class="stat" id="mediaSoma">Soma média: --</div>
+      <div class="stat" id="paresMedios">Pares médios: --</div>
+      <div class="stat" id="maisFrequentes">Top frequentes: --</div>
+      <div class="stat" id="ultimoConcurso">Último concurso: --</div>
+    </div>
+    <div class="results" id="historicoLista" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card" id="sobre">
+    <div class="card-header">
+      <h2 class="card-title"><i class="fas fa-info-circle"></i> Sobre o Projeto</h2>
+    </div>
+    <p>Projeto por <strong>João Paulo</strong> para estudo e entretenimento sobre Lotofácil. Carrega dados CSV, gera palpites e mostra estatísticas.</p>
+    <h3 style="margin:16px 0 8px">Como usar</h3>
+    <ul style="margin-left:18px;margin-bottom:10px">
+      <li>Aguarde o carregamento do arquivo de resultados.</li>
+      <li>Ajuste filtros e pesos, gere palpites e adicione aos "Meus Jogos".</li>
+      <li>Use o verificador para conferir seus jogos com concursos passados.</li>
+      <li>Exporte seus jogos para CSV quando quiser.</li>
+    </ul>
+    <div class="warning">
+      <i class="fas fa-exclamation-circle"></i> Não há método infalível. Use apenas como referência.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-content">
+    <div class="footer-section">
+      <h3>Lotofácil Assistente</h3>
+      <p>Ferramenta de análise e geração de palpites para Lotofácil</p>
+    </div>
+    <div class="footer-section">
+      <h3>Links Úteis</h3>
+      <p><a href="https://loterias.caixa.gov.br/Paginas/Lotofacil.aspx" style="color:#fff" target="_blank" rel="noopener">Site Oficial da Lotofácil</a></p>
+      <p><a href="#sobre" style="color:#fff">Sobre este projeto</a></p>
+    </div>
+    <div class="footer-section">
+      <h3>Contato</h3>
+      <p>Desenvolvido por João Paulo</p>
+      <p>Email: joaopaulo@exemplo.com</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>&copy; 2025 Lotofácil Assistente - Todos os direitos reservados</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
